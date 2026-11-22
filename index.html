@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nakshatra Guide — Personal Daily Forecast</title>
+    <link rel="stylesheet" href="style.css?v=210">
+    <style>
+        select option {
+            background-color: #0b1326 !important;
+            color: #ffffff !important;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="starfield-bg"></canvas>
+
+    <div class="dashboard-container" style="max-width: 900px; margin: 0 auto; padding: 20px;">
+
+        <!-- Center Branding Header -->
+        <div class="card branding-card-panel" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; margin-bottom: 20px;">
+            <div class="branding-image-container">
+                <img src="ng head.jpg" alt="Nakshatra Guide Logo" class="scaled-panel-img">
+            </div>
+
+            <div id="specialOccasionBox" style="display: none; margin-top: 12px; padding: 10px; background: rgba(202, 164, 55, 0.12); border: 1px dashed rgba(202, 164, 55, 0.4); border-radius: 6px; width: 100%; box-sizing: border-box;">
+                <span id="festivalTitle" style="font-size: 0.92rem; font-weight: bold; color: #caa437;"></span><br>
+                <span id="festivalDesc" style="font-size: 0.82rem; color: #e2e8f0;"></span>
+            </div>
+        </div>
+
+        <!-- NEW USERS ONLY: Onboarding Container -->
+        <div id="newUserDataRow" class="dashboard-row-three-columns" style="display: none; margin-bottom: 20px;">
+
+            <div class="card outlined-card" id="profileFormPanel">
+                <div class="card-header">Astrological Profile</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="dob">Date of Birth (DD-MM-YYYY)</label>
+                        <input type="text" id="dob" placeholder="DD-MM-YYYY" maxlength="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tob">Time of Birth</label>
+                        <input type="time" id="tob" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birth-place-input">Place of Birth (City)</label>
+                        <input type="text" id="birth-place-input" placeholder="e.g. Bengaluru" value="Bengaluru">
+                    </div>
+
+                    <div class="form-group" style="margin-top: 12px;">
+                        <label for="country-input">Country</label>
+                        <input type="text" id="country-input" placeholder="e.g. India" value="India">
+                    </div>
+
+                    <button id="submitBtn" class="btn primary-btn" style="margin-top: 20px; width: 100%;">Submit</button>
+                </div>
+            </div>
+
+            <div class="card outlined-card" id="detectedStatusPanel">
+                <div class="card-header">Detected Nakshatra</div>
+                <div class="card-body">
+                    <div id="detectedNakshatra" class="highlight-text">Waiting for Birth Details</div>
+                    <div id="detectedPada" class="sub-highlight-text"></div>
+                    <div id="activeForecastDateDisplay" style="margin-top: 4px; font-size: 0.88rem; color: rgba(255, 204, 0, 0.85); font-weight: bold;"></div>
+
+                    <div class="rasi-zodiac-details" style="margin-top: 15px;">
+                        <div>Vedic Sign (Rasi): <strong id="vedicRasi">-</strong></div>
+                        <div style="margin-top: 8px;">Zodiac Sign: <strong id="westernZodiac">-</strong></div>
+                    </div>
+
+                    <div id="birthdayGreetingBox" style="display: none; margin-top: 15px; padding: 10px; background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.6); border-radius: 8px; text-align: center; animation: birthdayGlow 1.8s infinite ease-in-out;">
+                        <span style="font-size: 1.05rem; font-weight: bold; color: #ffd700;">🎂 Happy Birthday!</span><br>
+                        <span style="font-size: 0.82rem; color: #ffffff;">May the transits bring light & progress for your solar return year.</span>
+                    </div>
+
+                    <div class="action-buttons-group" style="margin-top: 20px;">
+                        <button id="confirmBtn" style="display: none;" class="btn confirm-btn">Confirm Details</button>
+                        <button id="rejectBtn" style="display: none;" class="btn reject-btn">Reject</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- MAIN ACTIVE PERSONAL FORECAST PANEL -->
+        <div id="forecastContainer" style="display: none; max-width: 900px; margin: 0 auto 30px auto;">
+            <div class="card" id="card-forecast">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 style="margin: 0;">Today's Astrological Snapshot</h3>
+                    <span id="forecastDateBadge" style="font-size: 0.88rem; color: #ffd700; font-weight: bold;"></span>
+                </div>
+                <div class="card-body">
+                    <div id="forecastBox" style="font-size: 1.05rem; line-height: 1.7;">Calculating coordinates...</div>
+
+                    <hr style="border: 0; border-top: 1px dashed rgba(255, 215, 0, 0.25); margin: 20px 0 15px 0;">
+
+                    <div id="guidanceBox" style="font-size: 0.95rem; line-height: 2;">
+                        <div><strong style="color: #ffd700;">Lucky Color:</strong> <span id="luckyColor">-</span></div>
+                        <div><strong style="color: #ffd700;">Lucky Time:</strong> <span id="goodTime">-</span></div>
+                        <div><strong style="color: #ffd700;">Unlucky Time:</strong> <span id="badTime">-</span></div>
+                    </div>
+
+                    <div style="margin-top: 25px; text-align: right; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 10px;">
+                        <button id="resetProfileLink" style="background: none; border: none; color: rgba(255, 255, 255, 0.5); cursor: pointer; font-size: 0.82rem; text-decoration: underline; padding: 0;">Reset profile & re-enter details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="js/index_app.js?v=210"></script>
+</body>
+</html>
