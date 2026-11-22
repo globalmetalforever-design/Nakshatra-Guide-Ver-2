@@ -64,50 +64,7 @@ function updateForecastSuiteHeader(profile) {
     const rasi = profile.rasi?.name || "Rasi";
     const zodiac = profile.zodiac?.name || "Zodiac";
     const rolePart = profile.inputs?.workNature ? ` • ${profile.inputs.workNature}` : "";
-    titleEl.textContent = `Forecast Suite : "${nakshatra} (${rasi}) • ${zodiac}${rolePart}"`;
-}
-
-function syncReportButtonForTab(tabKey) {
-    const reportBtn = document.getElementById("generateInsightBtn");
-    const hintEl = document.getElementById("suiteActionHint");
-    if (!reportBtn) return;
-
-    reportBtn.textContent = "Generate Report";
-
-    if (tabKey === "general") {
-        reportBtn.style.display = "none";
-        if (hintEl) {
-            hintEl.textContent = "General outlook is displayed directly on this tab without report generation.";
-        }
-    } else {
-        reportBtn.style.display = "inline-block";
-        if (hintEl) {
-            hintEl.textContent = "Combined synthesis across traditions automatically updates per tab.";
-        }
-    }
-}
-
-function setProfileViewMode(hasStoredProfile) {
-    const newUserDataRow = document.getElementById("newUserDataRow");
-    const studyControlCard = document.getElementById("studyControlCard");
-
-    if (hasStoredProfile) {
-        if (newUserDataRow) newUserDataRow.style.display = "none";
-        if (studyControlCard) studyControlCard.style.display = "block";
-    } else {
-        if (newUserDataRow) {
-            newUserDataRow.style.display = "grid";
-            newUserDataRow.style.gridTemplateColumns = (window.innerWidth > 768) ? "1fr 1fr" : "1fr";
-        }
-        if (studyControlCard) studyControlCard.style.display = "none";
-    }
-}
-
-function getFormattedCurrentDate(dateObj = new Date()) {
-    const dd = String(dateObj.getDate()).padStart(2, '0');
-    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-    const yyyy = dateObj.getFullYear();
-    return `${yyyy}-${mm}-${dd}`;
+    titleEl.textContent = `Forecast Suite : "${nakshatra} (${rasi}) •${zodiac}${rolePart}"`; }  function syncReportButtonForTab(tabKey) { const reportBtn = document.getElementById("generateInsightBtn"); const hintEl = document.getElementById("suiteActionHint"); if (!reportBtn) return;  reportBtn.textContent = "Generate Report";  if (tabKey === "general") { reportBtn.style.display = "none"; if (hintEl) { hintEl.textContent = "General outlook is displayed directly on this tab without report generation."; } } else { reportBtn.style.display = "inline-block"; if (hintEl) { hintEl.textContent = "Combined synthesis across traditions automatically updates per tab."; } } }  function setProfileViewMode(hasStoredProfile) { const newUserDataRow = document.getElementById("newUserDataRow"); const studyControlCard = document.getElementById("studyControlCard");  if (hasStoredProfile) { if (newUserDataRow) newUserDataRow.style.display = "none"; if (studyControlCard) studyControlCard.style.display = "block"; } else { if (newUserDataRow) { newUserDataRow.style.display = "grid"; newUserDataRow.style.gridTemplateColumns = (window.innerWidth > 768) ? "1fr 1fr" : "1fr"; } if (studyControlCard) studyControlCard.style.display = "none"; } }  function getFormattedCurrentDate(dateObj = new Date()) { const dd = String(dateObj.getDate()).padStart(2, '0'); const mm = String(dateObj.getMonth() + 1).padStart(2, '0'); const yyyy = dateObj.getFullYear(); return `${yyyy}-${mm}-${dd}`;
 }
 
 function formatHumanReadableDate(dateObj) {
@@ -236,19 +193,8 @@ async function analyzeTransitsForWindow(profile, windowInfo) {
 function appendTranscriptNotes(baseHtml, bucket, rasiName, horizonTag) {
     const lines = getMatchingTranscriptLines(bucket, rasiName, horizonTag);
     if (!lines || lines.length === 0) return baseHtml;
-    const joined = lines.slice(-2).map(l => `• ${l}`).join("<br>");
-    return `${baseHtml}<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,215,0,0.25); font-size: 0.9rem; color: #fde68a;">${joined}</div>`;
-}
-
-// -------------------------------------------------------------------------
-// Distinct Caution Scenarios per Horizon Tab: WEEK vs. MONTH vs. YEAR
-// -------------------------------------------------------------------------
-function buildHorizonSpecificCautionHtml(tabKey, windowInfo, transitData) {
-    const cStart = transitData.cautionDates.length > 0 ? formatHumanReadableDate(transitData.cautionDates[0]) : null;
-    const cEnd = transitData.cautionDates.length > 0 ? formatHumanReadableDate(transitData.cautionDates[transitData.cautionDates.length - 1]) : null;
-    const datePhrase = cStart && cEnd
-        ? (cStart === cEnd ? `around <strong>${cStart}</strong>` : `between <strong>${cStart}</strong> and <strong>${cEnd}</strong>`)
-        : `across <strong>${formatHumanReadableDate(windowInfo.startDate)} to ${formatHumanReadableDate(windowInfo.endDate)}</strong>`;
+    const joined = lines.slice(-2).map(l => `• ${l}`).join("<br>"); return `${baseHtml}<div style="margin-top: 8px; padding-top: 8px; border-top: 1px dashed rgba(255,215,0,0.25); font-size: 0.9rem; color: #fde68a;">${joined}</div>`; }  function buildHorizonSpecificCautionHtml(tabKey, windowInfo, transitData) { const cStart = transitData.cautionDates.length > 0 ? formatHumanReadableDate(transitData.cautionDates[0]) : null; const cEnd = transitData.cautionDates.length > 0 ? formatHumanReadableDate(transitData.cautionDates[transitData.cautionDates.length - 1]) : null; const datePhrase = cStart && cEnd ? (cStart === cEnd ? `around <strong>${cStart}</strong>` : `between <strong>${cStart}</strong> and <strong>${cEnd}</strong>`)
+        : `across <strong>${formatHumanReadableDate(windowInfo.startDate)} to${formatHumanReadableDate(windowInfo.endDate)}</strong>`;
 
     let heading = "Caution Window";
     let intro = "";
@@ -335,7 +281,7 @@ function buildRoleSpecificGuidance(profile, hm, retroKeys, transitData) {
     }
 
     if (natureRaw) {
-        roleBody = `<strong>Profile Note (${natureRaw}):</strong> ${roleBody}`;
+        roleBody = `<strong>Profile Note (${natureRaw}):</strong>${roleBody}`;
     }
     blocks.push({ title: roleTitle, text: roleBody });
 
@@ -436,7 +382,7 @@ function buildPersonalSections(profile, tabKey, windowInfo, transitData) {
     sections.push({
         title: "🪙 Wealth & Gold / Silver Guidance",
         html: appendTranscriptNotes(
-            `<p style="margin: 0 0 8px 0;"><strong>Gold:</strong> ${METALS_MARKET_OUTLOOK.goldNote} ${timingLine}</p>` +
+            `<p style="margin: 0 0 8px 0;"><strong>Gold:</strong> ${METALS_MARKET_OUTLOOK.goldNote}${timingLine}</p>` +
             `<p style="margin: 0 0 8px 0;"><strong>Silver:</strong> ${METALS_MARKET_OUTLOOK.silverNote}</p>` +
             `<p style="margin: 0;"><strong>Personal Note:</strong> ${genderLine}</p>`,
             "finance",
@@ -475,7 +421,7 @@ function buildPersonalSections(profile, tabKey, windowInfo, transitData) {
 }
 
 function buildGeneralSections(tabKey, windowInfo) {
-    const spanText = `${formatHumanReadableDate(windowInfo.startDate)} to ${formatHumanReadableDate(windowInfo.endDate)}`;
+    const spanText = `${formatHumanReadableDate(windowInfo.startDate)} to${formatHumanReadableDate(windowInfo.endDate)}`;
     const horizonTag = tabKey === "week" ? "weekly" : tabKey === "month" ? "monthly" : "annual";
     const transcriptMacroLines = getMatchingTranscriptLines("macro", "all", horizonTag);
 
@@ -495,7 +441,7 @@ function buildGeneralSections(tabKey, windowInfo) {
         },
         {
             title: "🪙 Gold & Silver Macro View",
-            html: `<p style="margin: 0;"><strong>Gold:</strong> ${METALS_MARKET_OUTLOOK.goldNote}<br><strong>Silver:</strong> ${METALS_MARKET_OUTLOOK.silverNote}</p>`
+            html: `<p style="margin: 0;"><strong>Gold:</strong> ${METALS_MARKET_OUTLOOK.goldNote}<br><strong>Silver:</strong>${METALS_MARKET_OUTLOOK.silverNote}</p>`
         }
     ];
 
@@ -509,14 +455,25 @@ function buildGeneralSections(tabKey, windowInfo) {
     return sections;
 }
 
+function renderPredictionBlockWithBottomDivider(title, bodyHtml, isLast = false, accentColor = "rgba(255, 215, 0, 0.24)") {
+    const dividerStyle = isLast
+        ? "padding-bottom: 4px; margin-bottom: 0;"
+        : `padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px dashed ${accentColor};`;
+
+    return `<div style="padding: 6px 2px; ${dividerStyle}">` +
+        `<h4 style="margin: 0 0 6px 0; color: #ffd700; font-size: 1.02rem;">${title}</h4>` +
+        `<div style="font-size: 0.96rem; line-height: 1.65;">${bodyHtml}</div>` +
+        `</div>`;
+}
+
 async function generateReportForTab(profile, tabKey) {
-    const cacheKey = `${profile.inputs?.date || "user"}_${profile.rasi?.number || 0}_${tabKey}_${getFormattedCurrentDate()}`;
+    const cacheKey = `${profile.inputs?.date \vert{}\vert{} "user"}_${profile.rasi?.number || 0}_${tabKey}_${getFormattedCurrentDate()}`;
     if (tabCache.has(cacheKey)) {
         return tabCache.get(cacheKey);
     }
 
     const windowInfo = resolveDateWindowForTab(tabKey);
-    const spanText = `${formatHumanReadableDate(windowInfo.startDate)} to ${formatHumanReadableDate(windowInfo.endDate)}`;
+    const spanText = `${formatHumanReadableDate(windowInfo.startDate)} to${formatHumanReadableDate(windowInfo.endDate)}`;
     const rasiName = profile.rasi?.name || "";
 
     let html = "";
@@ -526,371 +483,4 @@ async function generateReportForTab(profile, tabKey) {
         const generalSections = buildGeneralSections(tabKey, windowInfo);
         title = "General & Macro Outlook";
         html += `<h2 style="color: #ffd700; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 8px; margin-top: 0;">General & Macro Outlook</h2>`;
-        html += `<div style="font-size: 0.9rem; color: #caa437; font-weight: bold; margin-bottom: 14px;">GENERAL • ${spanText}</div>`;
-        generalSections.forEach(sec => {
-            html += `<div style="margin-bottom: 15px; padding: 14px; background: rgba(0,0,0,0.32); border-left: 3px solid #caa437; border-radius: 4px;">`;
-            html += `<h4 style="margin: 0 0 6px 0; color: #ffd700; font-size: 1.02rem;">${sec.title}</h4>`;
-            html += `<div style="font-size: 0.96rem; line-height: 1.65;">${sec.html}</div>`;
-            html += `</div>`;
-        });
-    } else {
-        const transitData = await analyzeTransitsForWindow(profile, windowInfo);
-        const personalSections = buildPersonalSections(profile, tabKey, windowInfo, transitData);
-
-        title = `${tabKey.toUpperCase()} Astrological Report`;
-        html += `<h2 style="color: #ffd700; border-bottom: 1px solid rgba(255,215,0,0.3); padding-bottom: 8px; margin-top: 0;">Combined Multi-Tradition Forecast</h2>`;
-        html += `<div style="font-size: 0.9rem; color: #caa437; font-weight: bold; margin-bottom: 14px;">${tabKey.toUpperCase()} (${windowInfo.label}) • ${spanText}</div>`;
-
-        if (transitData.retrogradeWindows.length > 0) {
-            html += `<div style="margin-bottom: 16px; padding: 12px 14px; background: rgba(217, 119, 6, 0.14); border: 1px solid rgba(251, 191, 36, 0.45); border-radius: 6px;">`;
-            html += `<strong style="color: #fbbf24; display: block; margin-bottom: 4px;">🔄 Focus & Review Windows Active:</strong>`;
-            transitData.retrogradeWindows.forEach(r => {
-                const domainProfile = SHIFT_DOMAIN_PROFILES[r.key] || {
-                    title: "Life & Daily Rhythm",
-                    advice: "Slow down external rush and double-check key details before moving ahead."
-                };
-                const rangeStr = formatHumanReadableDate(r.start) === formatHumanReadableDate(r.end)
-                    ? formatHumanReadableDate(r.start)
-                    : `${formatHumanReadableDate(r.start)} to ${formatHumanReadableDate(r.end)}`;
-                html += `<div style="font-size: 0.9rem; color: #fef3c7; margin-top: 5px;">• <strong>${domainProfile.title}</strong> (${rangeStr}): ${domainProfile.advice}</div>`;
-            });
-            html += `</div>`;
-        }
-
-        personalSections.forEach(sec => {
-            html += `<div style="margin-bottom: 15px; padding: 14px; background: rgba(0,0,0,0.32); border-left: 3px solid #ffd700; border-radius: 4px;">`;
-            html += `<h4 style="margin: 0 0 6px 0; color: #ffd700; font-size: 1.02rem;">${sec.title}</h4>`;
-            html += `<div style="font-size: 0.96rem; line-height: 1.65;">${sec.html}</div>`;
-            html += `</div>`;
-        });
-
-        html += buildHorizonSpecificCautionHtml(tabKey, windowInfo, transitData);
-    }
-
-    const result = { html, title, windowInfo };
-    tabCache.set(cacheKey, result);
-    return result;
-}
-
-async function activateAndRenderTab(tabKey) {
-    currentActiveTab = tabKey;
-    syncReportButtonForTab(tabKey);
-
-    document.querySelectorAll(".horizon-tab-btn").forEach(btn => {
-        btn.classList.toggle("active-horizon-tab", btn.dataset.tab === tabKey);
-    });
-
-    const panel = document.getElementById("tabDisplayPanel");
-    if (!panel || !currentBirthProfile) return;
-
-    panel.innerHTML = `<div style="color: #ffd700; font-size: 0.9rem;">Calculating ${tabKey.toUpperCase()} forecast...</div>`;
-    const result = await generateReportForTab(currentBirthProfile, tabKey);
-    panel.innerHTML = result.html;
-}
-
-function showPredictionModal(title, htmlContent) {
-    const modal = document.getElementById("predictionModalOverlay");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalBody = document.getElementById("modalBodyContent");
-
-    if (modal && modalTitle && modalBody) {
-        modalTitle.innerText = title;
-        modalBody.innerHTML = htmlContent;
-        modal.style.display = "flex";
-    }
-}
-
-function closePredictionModal() {
-    const modal = document.getElementById("predictionModalOverlay");
-    if (modal) modal.style.display = "none";
-}
-
-function displayFullReport(profile) {
-    const profileKey = profile.inputs?.date || "user";
-    const reportItems = getStoredReport(profileKey);
-
-    if (reportItems.length === 0) {
-        showPredictionModal("Saved Report Ledger", "No reports generated yet. Click Generate Report on a forecast tab to save one.");
-        return;
-    }
-
-    let ledgerHtml = `<div style="text-align: right; margin-bottom: 10px;">` +
-        `<button id="clearReportBtn" class="btn" style="background: #a83232; color: #fff; padding: 4px 10px; font-size: 0.8rem; border-radius: 4px; cursor: pointer;">Clear Ledger</button>` +
-        `</div>`;
-
-    reportItems.forEach((item, index) => {
-        ledgerHtml += `<div style="margin-bottom: 20px; padding: 15px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,215,0,0.2); border-radius: 6px;">`;
-        ledgerHtml += `<div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #ffd700; margin-bottom: 8px; border-bottom: 1px solid rgba(255,215,0,0.1); padding-bottom: 4px;">`;
-        ledgerHtml += `<span>Report ${index + 1}: [${item.topic.toUpperCase()}] • [${item.method.toUpperCase()}]</span>`;
-        ledgerHtml += `<span>${new Date(item.timestamp).toLocaleDateString()}</span>`;
-        ledgerHtml += `</div>`;
-        ledgerHtml += `<div style="font-size: 0.95rem; line-height: 1.6;">${item.content}</div>`;
-        ledgerHtml += `</div>`;
-    });
-
-    showPredictionModal("Saved Report Ledger", ledgerHtml);
-
-    setTimeout(() => {
-        document.getElementById("clearReportBtn")?.addEventListener("click", () => {
-            if (confirm("Are you sure you want to clear all saved reports?")) {
-                clearStoredReport(profileKey);
-                closePredictionModal();
-            }
-        });
-    }, 100);
-}
-
-function downloadReportAsTxt(profile) {
-    const profileKey = profile.inputs?.date || "user";
-    const reportItems = getStoredReport(profileKey);
-
-    if (reportItems.length === 0) {
-        alert("No report data available to save.");
-        return;
-    }
-
-    let fullText = "NAKSHATRA GUIDE - REPORT LEDGER\n";
-    fullText += `Generated on: ${new Date().toLocaleDateString()}\n`;
-    fullText += "==================================================\n\n";
-
-    reportItems.forEach((item, index) => {
-        fullText += `--- SECTION ${index + 1}: ${item.topic.toUpperCase()} (${item.method.toUpperCase()}) ---\n\n`;
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = item.content;
-        fullText += tempDiv.textContent || tempDiv.innerText || "";
-        fullText += "\n\n--------------------------------------------------\n\n";
-    });
-
-    const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Nakshatra_Report_${getFormattedCurrentDate()}.txt`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-}
-
-async function loadStoredProfileAndRender() {
-    try {
-        const storedData = localStorage.getItem("permanentBirthProfile");
-        if (!storedData) {
-            setProfileViewMode(false);
-            updateForecastSuiteHeader(null);
-            return;
-        }
-
-        const profile = JSON.parse(storedData);
-        currentBirthProfile = profile;
-
-        if (!profile.nakshatra || (profile.hour === undefined && profile.birthHour === undefined && profile.inputs?.hour === undefined)) {
-            localStorage.removeItem("permanentBirthProfile");
-            setProfileViewMode(false);
-            updateForecastSuiteHeader(null);
-            return;
-        }
-
-        clearTabCache();
-        setProfileViewMode(true);
-        updateForecastSuiteHeader(profile);
-        syncReportButtonForTab(currentActiveTab);
-        const profileKey = profile.inputs?.date || "user";
-        updateReportBadgeCount(getStoredReport(profileKey).length);
-        await activateAndRenderTab(currentActiveTab);
-    } catch (err) {
-        console.error("Profile auto-load failed:", err);
-        localStorage.removeItem("permanentBirthProfile");
-        setProfileViewMode(false);
-        updateForecastSuiteHeader(null);
-    }
-}
-
-async function handleSubmit() {
-    const dobInput = document.getElementById("dob").value;
-    const tobValue = document.getElementById("tob").value;
-    const genderValue = document.getElementById("genderSelect")?.value || "unspecified";
-    const occupationStatus = document.getElementById("occupationStatusSelect")?.value || "working";
-    const workNature = document.getElementById("workNatureInput")?.value.trim() || "";
-    const houseStatus = document.getElementById("houseStatusSelect")?.value || "own";
-    const vehicleStatus = document.getElementById("vehicleStatusSelect")?.value || "own";
-    const placeValue = document.getElementById("birth-place-input")?.value || "";
-    const countryValue = document.getElementById("country-input")?.value || "";
-
-    try {
-        if (!dobInput || dobInput.length < 10) throw new Error("Please enter a valid Date of Birth (DD-MM-YYYY).");
-        if (!tobValue) throw new Error("Please select your Time of Birth.");
-
-        const [day, month, year] = dobInput.split("-").map(Number);
-        if (isNaN(day) || isNaN(month) || isNaN(year) || month < 1 || month > 12 || day < 1 || day > 31) {
-            throw new Error("Invalid date components. Use DD-MM-YYYY format.");
-        }
-
-        const [hour, minute] = tobValue.split(":").map(Number);
-        let resolvedTimezone = -(new Date().getTimezoneOffset() / 60);
-        const normalizedCity = placeValue.trim().toLowerCase();
-
-        if (GLOBAL_CITY_TZ_DB[normalizedCity] !== undefined) {
-            resolvedTimezone = GLOBAL_CITY_TZ_DB[normalizedCity];
-        }
-
-        const inputPayload = { year, month, day, hour, minute, timezone: resolvedTimezone };
-        currentBirthProfile = await getBirthData(inputPayload);
-
-        currentBirthProfile.inputs = {
-            date: dobInput,
-            time: tobValue,
-            gender: genderValue,
-            occupationStatus,
-            workNature,
-            houseStatus,
-            vehicleStatus,
-            place: placeValue,
-            country: countryValue,
-            year, month, day, hour, minute,
-            timezone: resolvedTimezone
-        };
-
-        document.getElementById("detectedNakshatra").innerText = `${currentBirthProfile.nakshatra.name}`;
-        document.getElementById("detectedPada").innerText = `Pada ${currentBirthProfile.pada.number}`;
-        if (document.getElementById("vedicRasi")) document.getElementById("vedicRasi").innerText = currentBirthProfile.rasi.name;
-        if (document.getElementById("westernZodiac")) document.getElementById("westernZodiac").innerText = currentBirthProfile.zodiac.name;
-
-        document.getElementById("submitBtn").style.display = "none";
-        document.getElementById("confirmBtn").style.display = "inline-block";
-        document.getElementById("rejectBtn").style.display = "inline-block";
-
-    } catch (err) {
-        document.getElementById("detectedNakshatra").innerText = err.message;
-        document.getElementById("detectedPada").innerText = "";
-        document.getElementById("confirmBtn").style.display = "none";
-        document.getElementById("rejectBtn").style.display = "none";
-        document.getElementById("submitBtn").style.display = "inline-block";
-    }
-}
-
-async function handleConfirm() {
-    if (!currentBirthProfile) return;
-
-    try {
-        clearTabCache();
-        localStorage.setItem("permanentBirthProfile", JSON.stringify(currentBirthProfile));
-        setProfileViewMode(true);
-        updateForecastSuiteHeader(currentBirthProfile);
-        await activateAndRenderTab(currentActiveTab);
-    } catch (err) {
-        alert("Error executing profile save: " + err.message);
-    }
-}
-
-function handleReject() {
-    currentBirthProfile = null;
-    document.getElementById("confirmBtn").style.display = "none";
-    document.getElementById("rejectBtn").style.display = "none";
-    document.getElementById("submitBtn").style.display = "inline-block";
-    document.getElementById("detectedNakshatra").innerText = "Waiting for Birth Details";
-    document.getElementById("detectedPada").innerText = "";
-    if (document.getElementById("vedicRasi")) document.getElementById("vedicRasi").innerText = "-";
-    if (document.getElementById("westernZodiac")) document.getElementById("westernZodiac").innerText = "-";
-}
-
-function handleReset() {
-    clearTabCache();
-    localStorage.removeItem("permanentBirthProfile");
-    currentBirthProfile = null;
-    window.location.reload();
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    loadStoredProfileAndRender();
-
-    document.getElementById("submitBtn")?.addEventListener("click", handleSubmit);
-    document.getElementById("confirmBtn")?.addEventListener("click", handleConfirm);
-    document.getElementById("rejectBtn")?.addEventListener("click", handleReject);
-    document.getElementById("resetProfileLink")?.addEventListener("click", handleReset);
-
-    document.querySelectorAll(".horizon-tab-btn").forEach(btn => {
-        btn.addEventListener("click", () => activateAndRenderTab(btn.dataset.tab));
-    });
-
-    document.getElementById("closeModalBtn")?.addEventListener("click", closePredictionModal);
-    document.getElementById("modalCloseActionBtn")?.addEventListener("click", closePredictionModal);
-
-    const openAdmin = () => openTranscriptAdminModal(() => {
-        clearTabCache();
-        activateAndRenderTab(currentActiveTab);
-    });
-    document.getElementById("hiddenOwnerTrigger")?.addEventListener("click", openAdmin);
-    window.openTranscriptAdmin = openAdmin;
-    document.addEventListener("keydown", (e) => {
-        if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "t") {
-            e.preventDefault();
-            openAdmin();
-        }
-    });
-
-    document.getElementById("modalDeleteReportBtn")?.addEventListener("click", () => {
-        if (confirm("Are you sure you want to delete this report and start fresh?")) {
-            if (currentBirthProfile) {
-                const profileKey = currentBirthProfile.inputs?.date || "user";
-                clearStoredReport(profileKey);
-            }
-            closePredictionModal();
-        }
-    });
-
-    document.getElementById("modalSaveReportBtn")?.addEventListener("click", () => {
-        if (currentBirthProfile) {
-            downloadReportAsTxt(currentBirthProfile);
-        }
-    });
-
-    document.getElementById("generateInsightBtn")?.addEventListener("click", async () => {
-        if (!currentBirthProfile || currentActiveTab === "general") return;
-        const btn = document.getElementById("generateInsightBtn");
-        const originalText = btn.innerText;
-        btn.innerText = "Generating Report...";
-        btn.disabled = true;
-
-        try {
-            const result = await generateReportForTab(currentBirthProfile, currentActiveTab);
-            const profileKey = currentBirthProfile.inputs?.date || "user";
-            logPredictionToReport(profileKey, COMBINED_METHOD_KEY, `${currentActiveTab.toUpperCase()} Forecast`, getFormattedCurrentDate(), result.html);
-            showPredictionModal(result.title, result.html);
-        } finally {
-            btn.innerText = originalText;
-            btn.disabled = false;
-        }
-    });
-
-    document.getElementById("viewCompleteReportBtn")?.addEventListener("click", () => {
-        if (!currentBirthProfile) return;
-        displayFullReport(currentBirthProfile);
-    });
-
-    const dobInput = document.getElementById("dob");
-    if (dobInput) {
-        dobInput.addEventListener("input", (e) => {
-            let v = e.target.value.replace(/\D/g, '');
-            let formattedValue = '';
-            if (v.length > 0) {
-                formattedValue = v.slice(0, 2);
-                if (v.length > 2) formattedValue += '-' + v.slice(2, 4);
-                if (v.length > 4) formattedValue += '-' + v.slice(4, 8);
-            }
-            e.target.value = formattedValue;
-            if (v.length === 8) {
-                setTimeout(() => document.getElementById("tob")?.focus(), 10);
-            }
-        });
-    }
-
-    const tobInput = document.getElementById("tob");
-    if (tobInput) {
-        tobInput.addEventListener("change", () => {
-            if (tobInput.value && tobInput.value.length === 5) {
-                document.getElementById("birth-place-input")?.focus();
-            }
-        });
-    }
-});
+        html += `<div style="font-size: 0.9rem; color: #
